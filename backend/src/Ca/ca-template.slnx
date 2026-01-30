@@ -1,4 +1,8 @@
 <Solution>
+  <Project Path="../../tests/Ca.Application.Tests/Ca.Application.Tests.csproj" />
+  <Project Path="../../tests/Ca.Domain.Tests/Ca.Domain.Tests.csproj" />
+  <Project Path="../../tests/Ca.Infrastructure.Tests/Ca.Infrastructure.Tests.csproj" />
+  <Project Path="../../tests/Ca.WebApi.Tests/Ca.WebApi.Tests.csproj" />
   <Project Path="Ca.Application/Ca.Application.csproj" />
   <Project Path="Ca.Contracts/Ca.Contracts.csproj" />
   <Project Path="Ca.Domain/Ca.Domain.csproj" />
