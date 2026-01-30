@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\Ca.Application\Ca.Application.csproj"/>
+        <ProjectReference Include="..\Ca.Domain\Ca.Domain.csproj"/>
+        <ProjectReference Include="..\Ca.Shared\Ca.Shared.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Config & DI utilities -->
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Physical"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting"/>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"/>
+
+        <!-- EF Core + Postgres -->
+        <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+
+        <!-- MongoDB driver & Identity -->
+        <PackageReference Include="MongoDB.Driver"/>
+        <PackageReference Include="MadEyeMatt.AspNetCore.Identity.MongoDB"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Modules\Auth\Mongo\Services\"/>
+    </ItemGroup>
+    
+</Project>

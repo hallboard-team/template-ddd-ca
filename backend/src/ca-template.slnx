@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Ca.Application/Ca.Application.csproj" />
+  <Project Path="Ca.Contracts/Ca.Contracts.csproj" />
+  <Project Path="Ca.Domain/Ca.Domain.csproj" />
+  <Project Path="Ca.Infrastructure/Ca.Infrastructure.csproj" />
+  <Project Path="Ca.Shared/Ca.Shared.csproj" />
+  <Project Path="Ca.WebApi/Ca.WebApi.csproj" />
+</Solution>

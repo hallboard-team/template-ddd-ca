@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+  dev-full-ca:
+    image: ghcr.io/hallboard-team/fullstack-dev:dotnet${DOTNET_VERSION:-10.0}-node${NODE_VERSION:-24}-ng${ANGULAR_VERSION:-21}
+    container_name: ${COMPOSE_PROJECT_NAME:-template}_dev-full
+
+    user: "0:0"
+    working_dir: /workspaces/app
+
+    volumes:
+      - ../../:/workspaces/app:Z
+      - ${HOME}/.cache/vscode-server-shared:/home/vscode/.vscode-server-shared:Z
+      - ${HOME}/.cache/codex:/home/vscode/.codex:Z
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      VSCODE_SERVER_DIR: /home/vscode/.vscode-server-shared
+      CODEX_HOME: /home/vscode/.codex
+
+      ConnectionStrings__Default: >
+        Host=db;Port=5432;
+        Database=${DB_NAME:-backend_postgres_db};
+        Username=${DB_USER:-backend_postgres_user};
+        Password=${DB_PASSWORD:-backend_postgres_password};
+        Include Error Detail=true
+
+    ports:
+      - "${API_PORT:-5002}:5002"      # .NET API
+      - "${LANDING_PORT:-4202}:4200"    # Angular landing dev server
+      - "${DASHBOARD_PORT:-4203}:4201"  # Angular dashboard dev server
+    depends_on:
+      db:
+        condition: service_healthy
+
+    command: >
+      bash -c "
+        dotnet --info &&
+        node -v &&
+        ng version || true &&
+        sleep infinity
+      "
+
+  db:
+    image: docker.io/library/postgres:${POSTGRES_VERSION:-17}-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-template}-backend_db
+
+    environment:
+      POSTGRES_USER: ${DB_USER:-backend_postgres_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-backend_postgres_password}
+      POSTGRES_DB: ${DB_NAME:-backend_postgres_db}
+
+    ports:
+      - "${DB_HOST_PORT:-5433}:5432"
+
+    volumes:
+      - pgdata:/var/lib/postgresql/data:Z
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USER:-backend_postgres_user} -d ${DB_NAME:-backend_postgres_db}"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
