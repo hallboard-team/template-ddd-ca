@@ -28,6 +28,7 @@ AGENTS.md                Agent guidance for this repo
 - .NET SDK matching `net10.0`
 - Node.js + pnpm (`pnpm@10.25.0`)
 - PostgreSQL and MongoDB (for development)
+- pnpm store should be global (`~/.pnpm-store`); the repo should not contain `.pnpm-store`
 
 ### Backend
 

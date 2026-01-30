@@ -15,6 +15,7 @@
 
 - .NET SDK targeting `net10.0` (see `backend/src/Ca/Directory.Build.props`).
 - Node.js (Angular 21) and `pnpm@10.25.0` (see `client/package.json`).
+- pnpm store is expected to be global (`~/.pnpm-store`); the repo should not contain `.pnpm-store`.
 - Local databases for development:
   - PostgreSQL at `localhost:5432` (`MyPostgresSettings`).
   - MongoDB at `localhost:27017` (`MyMongoDbSettings`).
