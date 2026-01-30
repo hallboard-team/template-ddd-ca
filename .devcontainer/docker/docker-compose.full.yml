@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   dev-full-ca:
     image: ghcr.io/hallboard-team/fullstack-dev:dotnet${DOTNET_VERSION:-10.0}-node${NODE_VERSION:-24}-ng${ANGULAR_VERSION:-21}
