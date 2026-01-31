@@ -1,11 +1,13 @@
 using Ca.Infrastructure.Modules.Auth.Postgres.Models;
 using Ca.Infrastructure.Persistence.EFCore.Common;
+using Ca.Infrastructure.Persistence.EFCore.Postgres.Conventions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ca.Infrastructure.Persistence.EFCore.Postgres;
 
 // General settings for Postgres using EFCore
-public class AppDbContextPostgres(IModelConventionPack conventionPack,
+public class AppDbContextPostgres(IModelConventionPackCommon commonConventionPack,
+    IModelConventionPackPostgres postgresConventionPack,
     DbContextOptions<AppDbContextPostgres> options) : DbContext(options)
 {
     // Postgres-compatible aggregates
@@ -29,7 +31,7 @@ public class AppDbContextPostgres(IModelConventionPack conventionPack,
 
     private void ApplyConventions(ModelBuilder builder)
     {
-        conventionPack.UseGuidV7PrimaryKeys(builder); // Default GUIDv7 for single Guid primary keys
-        conventionPack.UseOptimisticConcurrencyWithXmin(builder); // Global xmin, with opt-outs
+        commonConventionPack.UseGuidV7PrimaryKeys(builder); // Default GUIDv7 for single Guid primary keys
+        postgresConventionPack.UseOptimisticConcurrencyWithXmin(builder); // Global xmin, with opt-outs
     }
 }

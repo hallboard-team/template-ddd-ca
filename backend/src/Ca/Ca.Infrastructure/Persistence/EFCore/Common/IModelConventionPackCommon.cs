@@ -2,8 +2,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ca.Infrastructure.Persistence.EFCore.Common;
 
-public interface IModelConventionPack
+/// <summary>
+/// Provider-agnostic EF Core conventions.
+/// </summary>
+public interface IModelConventionPackCommon
 {
     void UseGuidV7PrimaryKeys(ModelBuilder builder);
-    void UseOptimisticConcurrencyWithXmin(ModelBuilder builder);
 }

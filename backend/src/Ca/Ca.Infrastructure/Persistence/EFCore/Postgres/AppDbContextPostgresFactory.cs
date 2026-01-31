@@ -1,4 +1,5 @@
-using Ca.Infrastructure.Persistence.EFCore.Postgres.Extensions;
+using Ca.Infrastructure.Persistence.EFCore.Common.Conventions;
+using Ca.Infrastructure.Persistence.EFCore.Postgres.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -86,7 +87,7 @@ public sealed class AppDbContextPostgresFactory : IDesignTimeDbContextFactory<Ap
                     }
                 ).Options;
 
-            return new AppDbContextPostgres(new ModelConventionPackPostgres(), opts);
+            return new AppDbContextPostgres(new ModelConventionPackCommon(), new ModelConventionPackPostgres(), opts);
         }
     }
 }
