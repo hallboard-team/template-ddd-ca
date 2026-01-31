@@ -14,6 +14,7 @@ internal sealed class ModelConventionPackCommon : IModelConventionPackCommon
     /// </summary>
     public void UseGuidV7PrimaryKeys(ModelBuilder builder)
     {
+        // Convention: if a PK is a single Guid without a DB default, generate GUIDv7 client-side.
         foreach (var entityType in builder.Model.GetEntityTypes())
         {
             if (entityType.IsOwned()) continue;
@@ -31,6 +32,7 @@ internal sealed class ModelConventionPackCommon : IModelConventionPackCommon
             if (keyProperty.GetDefaultValueSql() is not null || keyProperty.GetDefaultValue() is not null) continue;
             if (keyProperty.GetValueGeneratorFactory() is not null) continue;
 
+            // Skip properties EF cannot set (no setter and no backing field).
             var propertyInfo = keyProperty.PropertyInfo;
             var fieldInfo = keyProperty.FieldInfo;
             if (propertyInfo is null && fieldInfo is null) continue;

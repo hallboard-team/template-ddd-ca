@@ -8,7 +8,13 @@ namespace Ca.Infrastructure.Persistence.EFCore.Common.Conventions;
 /// </summary>
 internal sealed class GuidV7ValueGenerator : ValueGenerator<Guid>
 {
+    /// <summary>
+    /// Generates a new GUIDv7 for the current entity entry.
+    /// </summary>
     public override Guid Next(EntityEntry entry) => Guid.CreateVersion7();
 
+    /// <summary>
+    /// GUIDv7 is final and should not be treated as a temporary value.
+    /// </summary>
     public override bool GeneratesTemporaryValues => false;
 }

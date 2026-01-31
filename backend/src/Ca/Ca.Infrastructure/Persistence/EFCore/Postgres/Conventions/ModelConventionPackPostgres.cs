@@ -16,6 +16,7 @@ internal sealed class ModelConventionPackPostgres : IModelConventionPackPostgres
     /// </summary>
     public void UseOptimisticConcurrencyWithXmin(ModelBuilder builder)
     {
+        // Convention: apply xmin to all eligible entities unless explicitly excluded.
         foreach (var entityType in builder.Model.GetEntityTypes())
         {
             if (entityType.IsOwned()) continue;
@@ -31,5 +32,6 @@ internal sealed class ModelConventionPackPostgres : IModelConventionPackPostgres
     }
 
     private static bool ShouldUseXmin(Type clrType) =>
+        // Domain opt-out via IAppendOnly, plus infra escape hatch via XminExcludedTypes.
         !typeof(IAppendOnly).IsAssignableFrom(clrType) && !XminExcludedTypes.Contains(clrType);
 }
