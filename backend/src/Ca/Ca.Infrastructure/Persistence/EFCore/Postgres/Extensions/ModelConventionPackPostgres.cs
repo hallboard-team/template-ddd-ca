@@ -21,7 +21,10 @@ internal sealed class ModelConventionPackPostgres : IModelConventionPack
 
             if (keyProperty.GetDefaultValueSql() is not null || keyProperty.GetDefaultValue() is not null) continue;
 
-            builder.Entity(entityType.ClrType)
+            var clrType = entityType.ClrType;
+            if (clrType is null) continue;
+
+            builder.Entity(clrType)
                    .Property<Guid>(keyProperty.Name)
                    .ValueGeneratedOnAdd()
                    .HasValueGenerator<GuidV7ValueGenerator>();
