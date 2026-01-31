@@ -1,4 +1,5 @@
 using Ca.WebApi;
+using Ca.WebApi.Middlewares;
 using Ca.WebApi.Startup;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,8 @@ if (app.Environment.IsDevelopment())
 await app.PerformAppSeeder();
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ConcurrencyConflictMiddleware>();
 
 app.UseAuthorization();
 
