@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
+        <!-- Enable CI build behaviors when CI=true -->
+        <ContinuousIntegrationBuild Condition="'$(CI)'=='true'">true</ContinuousIntegrationBuild>
     </PropertyGroup>
 
     <!-- These items are applied to all projects-->
