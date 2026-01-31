@@ -21,10 +21,15 @@ public class AppDbContextPostgres(IModelConventionPack conventionPack,
         builder.ApplyConfigurationsFromAssembly(typeof(AppDbContextPostgres).Assembly);
 
         // Applied our custom conventions
-        conventionPack.UseGuidV7PrimaryKeys(builder); // Default GUIDv7 for single Guid primary keys
-        conventionPack.UseOptimisticConcurrencyWithXmin(builder.Entity<AppUserPostgres>());
-        
-        // Apply some possible inherited conventions, otherwise EF skips all the extra mappings 
+        ApplyConventions(builder);
+
+        // Allow base DbContext conventions/config to run. 
         base.OnModelCreating(builder);
+    }
+
+    private void ApplyConventions(ModelBuilder builder)
+    {
+        conventionPack.UseGuidV7PrimaryKeys(builder); // Default GUIDv7 for single Guid primary keys
+        conventionPack.UseOptimisticConcurrencyWithXmin(builder); // Global xmin, with opt-outs
     }
 }

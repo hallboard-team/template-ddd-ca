@@ -1,7 +1,7 @@
+using Ca.Domain.Modules.Common.Base;
 using Ca.Infrastructure.Persistence.EFCore.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ca.Infrastructure.Persistence.EFCore.Postgres.Extensions;
 
@@ -12,6 +12,11 @@ internal sealed class ModelConventionPackPostgres : IModelConventionPack
         foreach (var entityType in builder.Model.GetEntityTypes())
         {
             if (entityType.IsOwned()) continue;
+            if (entityType.IsKeyless) continue;
+
+            var clrType = entityType.ClrType;
+            if (clrType is null) continue;
+            if (clrType.IsAbstract) continue;
 
             var key = entityType.FindPrimaryKey();
             if (key is null || key.Properties.Count != 1) continue;
@@ -27,9 +32,6 @@ internal sealed class ModelConventionPackPostgres : IModelConventionPack
             if (propertyInfo is null && fieldInfo is null) continue;
             if (propertyInfo is not null && propertyInfo.SetMethod is null && fieldInfo is null) continue;
 
-            var clrType = entityType.ClrType;
-            if (clrType is null) continue;
-
             builder.Entity(clrType)
                    .Property<Guid>(keyProperty.Name)
                    .ValueGeneratedOnAdd()
@@ -40,7 +42,21 @@ internal sealed class ModelConventionPackPostgres : IModelConventionPack
     /// <summary>
     /// Maps Postgres system column xmin as a concurrency token.
     /// </summary>
-    public void UseOptimisticConcurrencyWithXmin<TEntity>(EntityTypeBuilder<TEntity> builder) where TEntity : class =>
-        builder.Property<uint>("xmin") // shadow map to system column
-            .IsRowVersion(); // concurrency token + DB-generated on add/update
+    public void UseOptimisticConcurrencyWithXmin(ModelBuilder builder)
+    {
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            if (entityType.IsOwned()) continue;
+            if (entityType.IsKeyless) continue;
+
+            var clrType = entityType.ClrType;
+            if (clrType is null) continue;
+            if (!ShouldUseXmin(clrType)) continue;
+
+            builder.Entity(clrType).Property<uint>("xmin").IsRowVersion();
+        }
+    }
+
+    private static bool ShouldUseXmin(Type clrType) =>
+        !typeof(IAppendOnly).IsAssignableFrom(clrType) && !XminExcludedTypes.Contains(clrType);
 }
