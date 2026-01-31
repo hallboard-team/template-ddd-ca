@@ -20,6 +20,12 @@ internal sealed class ModelConventionPackPostgres : IModelConventionPack
             if (keyProperty.ClrType != typeof(Guid)) continue;
 
             if (keyProperty.GetDefaultValueSql() is not null || keyProperty.GetDefaultValue() is not null) continue;
+            if (keyProperty.GetValueGeneratorFactory() is not null) continue;
+
+            var propertyInfo = keyProperty.PropertyInfo;
+            var fieldInfo = keyProperty.FieldInfo;
+            if (propertyInfo is null && fieldInfo is null) continue;
+            if (propertyInfo is not null && propertyInfo.SetMethod is null && fieldInfo is null) continue;
 
             var clrType = entityType.ClrType;
             if (clrType is null) continue;
