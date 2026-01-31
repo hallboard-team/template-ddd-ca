@@ -19,8 +19,9 @@ public class AppDbContextPostgres(IModelConventionPack conventionPack,
     {
         // Customized configuration classes
         builder.ApplyConfigurationsFromAssembly(typeof(AppDbContextPostgres).Assembly);
-        
+
         // Applied our custom conventions
+        conventionPack.UseGuidV7PrimaryKeys(builder); // Default GUIDv7 for single Guid primary keys
         conventionPack.UseOptimisticConcurrencyWithXmin(builder.Entity<AppUserPostgres>());
         
         // Apply some possible inherited conventions, otherwise EF skips all the extra mappings 
