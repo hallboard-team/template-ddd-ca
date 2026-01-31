@@ -73,6 +73,13 @@ Development settings live in:
 
 You should override credentials and secrets with environment variables or user secrets in real projects.
 
+## EF Core conventions (Postgres)
+
+- GUID primary keys use client-side GUIDv7 generation by default (single `Guid` PKs without DB defaults).
+- Postgres `xmin` is used as a global optimistic concurrency token.
+- Opt out of `xmin` by implementing `IAppendOnly` on the domain entity (or add a type to the infrastructure exclusion list).
+- Concurrency conflicts return `409 Conflict` with `ProblemDetails` from the Web API middleware.
+
 ## Testing
 
 ```bash

@@ -77,3 +77,10 @@ Angular dev server defaults to `http://localhost:4200`.
 - Missing `pnpm` or Node versions cause Angular CLI to fail.
 - API and client ports may be out of sync (proxy vs launch settings).
 - DB services must be running locally for API startup in Development.
+
+## EF Core conventions (Postgres)
+
+- GUID primary keys default to client-side GUIDv7 (single `Guid` PKs without DB defaults).
+- Postgres `xmin` is used as a global optimistic concurrency token.
+- Opt out of `xmin` by implementing `IAppendOnly` on the domain entity (or add a type to the infra exclusion list).
+- Concurrency conflicts are mapped to `409 Conflict` by Web API middleware.
