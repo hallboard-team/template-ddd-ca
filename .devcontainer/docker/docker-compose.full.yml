@@ -24,7 +24,7 @@ services:
         Include Error Detail=true
 
     ports:
-      - "${API_PORT:-5002}:5002"      # .NET API
+      - "${API_PORT:-5002}:5002"        # .NET API
       - "${LANDING_PORT:-4202}:4200"    # Angular landing dev server
       - "${DASHBOARD_PORT:-4203}:4201"  # Angular dashboard dev server
     depends_on:
@@ -46,7 +46,7 @@ services:
     environment:
       POSTGRES_USER: ${DB_USER:-backend_postgres_user}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-backend_postgres_password}
-      POSTGRES_DB: ${DB_NAME:-backend_postgres_db}
+      POSTGRES_DB: ${COMPOSE_PROJECT_NAME:-template}
 
     ports:
       - "${DB_HOST_PORT:-5433}:5432"
