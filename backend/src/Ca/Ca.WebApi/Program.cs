@@ -1,4 +1,5 @@
 using Ca.WebApi;
+using Ca.WebApi.Extensions;
 using Ca.WebApi.Middlewares;
 using Ca.WebApi.Startup;
 
@@ -28,7 +29,13 @@ await app.PerformAppSeeder();
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<ConcurrencyConflictMiddleware>();
+app.UseMiddleware<ConcurrencyConflictMiddleware>(); // Idempotency helper
+
+app.UseCors();
+
+app.UseAuthentication();
+
+app.UseRateLimiter(); // Following Authentication, now safely access the user's identity or claims for user-based rate limiting.
 
 app.UseAuthorization();
 

@@ -15,6 +15,9 @@ public static class DependencyInjection
 
         services.AddDataProtection(); // runtime service needed by Identity token providers
         services.AddPolicyService(); // Authorization policies
+        services.AddCorsService(); // CORS policies
+        services.AddRateLimitingService(); // Global and partitioned throttling
+    }
 
         services.AddInfrastructureServices(config, env);
         services.AddApplicationServices();
