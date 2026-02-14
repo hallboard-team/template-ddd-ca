@@ -17,14 +17,7 @@ builder.Services.AddOpenApi();
 
 WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwaggerUI(options => { options.SwaggerEndpoint("/openapi/v1.json", "Ca.WebApi"); }
-    );
-}
-
+app.UseAppServices(); // Swagger, HealthChecks, etc
 await app.PerformAppSeeder();
 
 app.UseHttpsRedirection();

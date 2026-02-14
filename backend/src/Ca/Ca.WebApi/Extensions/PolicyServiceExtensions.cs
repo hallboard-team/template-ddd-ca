@@ -2,7 +2,8 @@ namespace Ca.WebApi.Extensions;
 
 internal static class PolicyServiceExtensions
 {
-    internal static IServiceCollection AddPolicyService(this IServiceCollection services) =>
+    internal static IServiceCollection AddPolicyService(this IServiceCollection services)
+    {
         // Add authorization policies for roles
         // services.AddAuthorizationBuilder().AddPolicy(
         //     name: AppVariablesExtensions.RequiredAdminRole,
@@ -13,5 +14,7 @@ internal static class PolicyServiceExtensions
         //         EnumExtensions.GetRoleStrValue(RoleName.SuperAdmin), EnumExtensions.GetRoleStrValue(RoleName.Moderator)
         //     )
         // );
-        services;
+
+        return services;
+    }
 }
