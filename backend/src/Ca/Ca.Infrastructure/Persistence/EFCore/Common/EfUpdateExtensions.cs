@@ -73,7 +73,7 @@ public static class EfUpdateExtensions
         IQueryable<T> result = query.AsTracking().
             TagWith($"UPDATE QUERY{(string.IsNullOrWhiteSpace(reason) ? "" : $": {reason}")}");
 
-        // Note: this bypasses all global filters, not just soft-delete filters.
+        // Note: this bypasses all global filters, including soft-delete.
         if (ignoreGlobalFilters)
             result = result.IgnoreQueryFilters();
 
