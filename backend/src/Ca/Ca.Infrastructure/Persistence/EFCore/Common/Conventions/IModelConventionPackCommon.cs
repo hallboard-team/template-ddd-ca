@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Ca.Infrastructure.Persistence.EFCore.Common;
+namespace Ca.Infrastructure.Persistence.EFCore.Common.Conventions;
 
 /// <summary>
 /// Provider-agnostic EF Core conventions.

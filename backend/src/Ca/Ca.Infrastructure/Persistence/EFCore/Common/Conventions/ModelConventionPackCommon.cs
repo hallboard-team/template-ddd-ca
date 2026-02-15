@@ -1,3 +1,4 @@
+using Ca.Infrastructure.Persistence.EFCore.Common.Conventions.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ca.Infrastructure.Persistence.EFCore.Common.Conventions;

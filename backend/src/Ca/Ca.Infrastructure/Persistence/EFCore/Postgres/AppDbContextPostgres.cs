@@ -1,5 +1,5 @@
 using Ca.Infrastructure.Modules.Auth.Postgres.Models;
-using Ca.Infrastructure.Persistence.EFCore.Common;
+using Ca.Infrastructure.Persistence.EFCore.Common.Conventions;
 using Ca.Infrastructure.Persistence.EFCore.Postgres.Conventions;
 using Microsoft.EntityFrameworkCore;
 

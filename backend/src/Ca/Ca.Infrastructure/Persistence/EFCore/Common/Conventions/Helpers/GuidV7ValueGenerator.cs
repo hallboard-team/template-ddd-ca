@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
-namespace Ca.Infrastructure.Persistence.EFCore.Common.Conventions;
+namespace Ca.Infrastructure.Persistence.EFCore.Common.Conventions.Helpers;
 
 /// <summary>
 /// Generates GUIDv7 values for client-side primary keys.
