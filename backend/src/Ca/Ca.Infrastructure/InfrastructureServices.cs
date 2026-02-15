@@ -15,8 +15,8 @@ public static class InfrastructureServices
         //// Postgres
         services.AddConfigsServicePostgres(config);
         services.AddServicePostgres(env);
-        // services.AddIdentityServicePostgres(); // TODO add this
-        // services.AddRepositoriesPostgres();
+        services.AddIdentityServicePostgres(); // TODO add this
+        services.AddRepositoriesPostgres();
 
 
         //// MongoDB
