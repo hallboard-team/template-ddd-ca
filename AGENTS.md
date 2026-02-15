@@ -3,6 +3,14 @@
 - Clean Architecture template with .NET (backend) and Angular (client + SSR landing).
 - Backend projects live under `backend/src/Ca`; tests under `backend/tests`.
 - Frontend workspace lives in `client` with multiple Angular projects: `dashboard`, `landing`, `ui`, `tool`.
+- This repository is a reusable template for future SaaS projects, not a single product implementation.
+
+## Template-first guidance
+
+- Prefer reusable, provider-agnostic patterns that future teams can copy safely.
+- Avoid app-specific assumptions, hardcoded business rules, or one-off shortcuts unless explicitly requested.
+- When proposing architecture, optimize for secure defaults, clarity, and maintainability across many future projects.
+- Add concise comments/docs where a template consumer needs intent, tradeoffs, or extension points.
 
 ## Repo layout
 
@@ -84,3 +92,8 @@ Angular dev server defaults to `http://localhost:4200`.
 - Postgres `xmin` is used as a global optimistic concurrency token.
 - Opt out of `xmin` by implementing `IAppendOnly` on the domain entity (or add a type to the infra exclusion list).
 - Concurrency conflicts are mapped to `409 Conflict` by Web API middleware.
+- Tenant isolation is secure-by-default:
+  - Entities that implement `ITenantScoped` are filtered globally by current request tenant id.
+  - Missing tenant context is fail-closed for tenant-scoped entities (returns no rows).
+- Soft-delete is explicit-by-query (do not add a global soft-delete filter in this template).
+- Avoid `IgnoreQueryFilters()` in shared query helpers; only use internal/admin-only paths if absolutely required.
