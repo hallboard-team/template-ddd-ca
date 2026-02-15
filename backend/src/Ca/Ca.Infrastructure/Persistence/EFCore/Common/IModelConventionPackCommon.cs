@@ -7,5 +7,5 @@ namespace Ca.Infrastructure.Persistence.EFCore.Common;
 /// </summary>
 public interface IModelConventionPackCommon
 {
-    void UseGuidV7PrimaryKeys(ModelBuilder builder);
+    internal void UseGuidV7PrimaryKeys(ModelBuilder builder);
 }
