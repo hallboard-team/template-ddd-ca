@@ -73,8 +73,8 @@ internal static class ServiceExtensionsPostgres
         services.AddScoped<IModelConventionPackCommon, ModelConventionPackCommon>();
         services.AddScoped<IModelConventionPackPostgres, ModelConventionPackPostgres>();
 
-        // AddDbContextPool has more performance than AddDbContext
-        services.AddDbContextPool<AppDbContextPostgres>((provider, options) =>
+        // Use non-pooled DbContext because tenant-aware global query filters depend on request-scoped tenant state.
+        services.AddDbContext<AppDbContextPostgres>((provider, options) =>
             {
                 string connectionStringRaw = provider.GetRequiredService<IOptions<MyPostgresSettings>>().Value.
                                                  ConnectionString

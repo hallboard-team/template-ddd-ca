@@ -7,5 +7,6 @@ public interface IModelConventionPackPostgres
     /// <summary>
     /// Applies Postgres-specific optimistic concurrency using the xmin system column.
     /// </summary>
-    void UseOptimisticConcurrencyWithXmin(ModelBuilder builder);
+    internal void UseOptimisticConcurrencyWithXmin(ModelBuilder builder);
+    internal void ApplyTenantGlobalFilters(ModelBuilder builder);
 }

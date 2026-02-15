@@ -33,5 +33,6 @@ public class AppDbContextPostgres(IModelConventionPackCommon commonConventionPac
     {
         commonConventionPack.UseGuidV7PrimaryKeys(builder); // Default GUIDv7 for single Guid primary keys
         postgresConventionPack.UseOptimisticConcurrencyWithXmin(builder); // Global xmin, with opt-outs
+        postgresConventionPack.ApplyTenantGlobalFilters(builder); // TODO: Tenant isolation by default for ITenantScoped entities
     }
 }
