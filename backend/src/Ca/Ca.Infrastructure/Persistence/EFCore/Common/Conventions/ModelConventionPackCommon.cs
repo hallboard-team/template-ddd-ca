@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Ca.Infrastructure.Persistence.EFCore.Common.Conventions;
 
@@ -39,9 +38,9 @@ internal sealed class ModelConventionPackCommon : IModelConventionPackCommon
             if (propertyInfo is not null && propertyInfo.SetMethod is null && fieldInfo is null) continue;
 
             builder.Entity(clrType)
-                   .Property<Guid>(keyProperty.Name)
-                   .ValueGeneratedOnAdd()
-                   .HasValueGenerator<GuidV7ValueGenerator>();
+                .Property<Guid>(keyProperty.Name)
+                .ValueGeneratedOnAdd()
+                .HasValueGenerator<GuidV7ValueGenerator>();
         }
     }
 }
