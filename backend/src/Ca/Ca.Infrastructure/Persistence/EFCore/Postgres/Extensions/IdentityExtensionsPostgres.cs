@@ -4,8 +4,10 @@ namespace Ca.Infrastructure.Persistence.EFCore.Postgres.Extensions;
 
 public static class IdentityExtensionsPostgres
 {
-    public static IServiceCollection AddIdentityServicePostgres(this IServiceCollection services) =>
-        throw new NotImplementedException();
+    public static IServiceCollection AddIdentityServicePostgres(this IServiceCollection services)
+    {
+        return services;
+    }
     // services.AddSingleton<MongoDbIdentityConfiguration>(provider =>
     //     {
     //         MyMongoDbSettings myMongoDbSettings = provider.GetRequiredService<IOptions<MyMongoDbSettings>>().Value;

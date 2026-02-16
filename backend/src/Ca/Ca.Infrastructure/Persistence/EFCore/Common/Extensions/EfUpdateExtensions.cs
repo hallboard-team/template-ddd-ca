@@ -1,3 +1,4 @@
+using Ca.Infrastructure.Persistence.EFCore.Common.Conventions.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ca.Infrastructure.Persistence.EFCore.Common.Extensions;
@@ -14,14 +15,17 @@ public static class EfUpdateExtensions
     /// <list type="bullet">
     ///     <item>
     ///         <term>
-    ///             <paramref name="bypassQueryFilters" />
+    ///             <paramref name="bypassSoftDeleteQueryFilter" />
+    ///             and
+    ///             <paramref name="bypassTenantQueryFilter" />
     ///         </term>
     ///         <description>
     ///             If <c>true</c>, applies
     ///             <see cref="EntityFrameworkQueryableExtensions.IgnoreQueryFilters{TEntity}(IQueryable{TEntity})" />
-    ///             to bypass global filters (including tenant filter).
-    ///             Important: when enabled, tenant isolation filters are disabled for this query.
-    ///             EF Core bypasses all global filters, not only tenant.
+    ///             for the named filter(s).
+    ///             Important: tenant isolation filters are security-sensitive; only bypass them in
+    ///             internal/admin-only paths. Named filters must exist in the model for bypassing to
+    ///             have any effect.
     ///         </description>
     ///     </item>
     ///     <item>
@@ -48,7 +52,7 @@ public static class EfUpdateExtensions
     ///     Example usage:
     ///     <code>
     /// var project = await _context.Projects
-    ///     .ForUpdate(bypassQueryFilters: true, useSplitQuery: true, reason: "EditProjectCommand")
+    ///     .ForUpdate(bypassTenantQueryFilter: true, useSplitQuery: true, reason: "EditProjectCommand")
     ///     .FirstOrDefaultAsync(p => p.Id == id, ct);
     /// 
     /// project.UpdateTitle("New Title");
@@ -57,16 +61,20 @@ public static class EfUpdateExtensions
     /// </summary>
     /// <typeparam name="T">The entity type being queried.</typeparam>
     /// <param name="query">The source query.</param>
-    /// <param name="bypassQueryFilters">
-    /// Whether to bypass EF Core global query filters for this query.
-    /// Warning: this disables tenant query filters too.
+    /// <param name="bypassSoftDeleteQueryFilter">
+    /// Whether to bypass the named soft-delete query filter for this query.
+    /// </param>
+    /// <param name="bypassTenantQueryFilter">
+    /// Whether to bypass the named tenant query filter for this query.
+    /// Warning: tenant isolation is security-sensitive; only bypass in internal/admin paths.
     /// </param>
     /// <param name="useSplitQuery">Whether to split queries for large include graphs.</param>
     /// <param name="reason">Optional SQL tag for debugging/profiling purposes.</param>
     /// <returns>The modified query with tracking and any requested behaviors applied.</returns>
     public static IQueryable<T> ForUpdate<T>(
         this IQueryable<T> query,
-        bool bypassQueryFilters = false,
+        bool bypassSoftDeleteQueryFilter = false,
+        bool bypassTenantQueryFilter = false,
         bool useSplitQuery = false,
         string? reason = null
     ) where T : class
@@ -74,8 +82,11 @@ public static class EfUpdateExtensions
         IQueryable<T> result = query.AsTracking().
             TagWith($"UPDATE QUERY{(string.IsNullOrWhiteSpace(reason) ? "" : $": {reason}")}");
 
-        if (bypassQueryFilters)
-            result = result.IgnoreQueryFilters();
+        if (bypassSoftDeleteQueryFilter)
+            result = result.IgnoreQueryFilters([QueryFilterNames.SoftDelete]);
+            
+        if (bypassTenantQueryFilter)
+            result = result.IgnoreQueryFilters([QueryFilterNames.Tenant]);
 
         if (useSplitQuery)
             result = result.AsSplitQuery();
